@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         stop = findViewById(R.id.stop);
 
         //todo 刚进来数据尚未缓冲好，是不能够进行播放的
-//        start.setEnabled(false);
+        start.setEnabled(false);
         stop.setEnabled(false);
 
         start.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +139,11 @@ public class MainActivity extends AppCompatActivity {
 //            Log.e(Ulog.TAG, "播放视频宽度:" + videoWidth);
 //            Log.e(Ulog.TAG, "播放视频高度:" + videoHeight);
             /**
+             * todo 需要保证声明了INTERNET权限
+             *
              * todo 针对网络媒体文件，可以使用MediaPlayer进行播放，似乎无法获取到文件的总长度（时间长度）
+             *
+             * 当setOnPreparedListener 回调被执行时，文件就可以进行播放了
              */
             /*
 02-20 15:44:29.533 27847-27847/? E/_AndroidRuntime: 异步准备
