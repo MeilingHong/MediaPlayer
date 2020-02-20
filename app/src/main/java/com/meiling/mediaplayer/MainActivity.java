@@ -4,7 +4,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -94,7 +93,18 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {//todo 准备完成，可以进行播放
-                    Log.e(Ulog.TAG, "准备完成");
+                    Ulog.e("准备完成");
+
+                    /**
+                     * todo MediaPlayer准备完成之后，可以获取到对应媒体文件的时间长度，宽高信息【最好保证播放的是视频时，再去调用获取视频高度，宽度的信息】
+                     */
+                    videoTimes = mediaPlayer.getDuration();
+                    videoWidth = mediaPlayer.getVideoWidth();
+                    videoHeight = mediaPlayer.getVideoHeight();
+                    Ulog.e("播放时间(毫秒):" + videoTimes);
+                    Ulog.e("播放视频宽度:" + videoWidth);
+                    Ulog.e("播放视频高度:" + videoHeight);
+
                     Toast.makeText(MainActivity.this, "准备完成", Toast.LENGTH_SHORT).show();
                     start.setEnabled(true);
                 }
@@ -103,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {//todo 播放完成
-                    Log.e(Ulog.TAG, "播放完");
+                    Ulog.e("播放完");
                     Toast.makeText(MainActivity.this, "播放完", Toast.LENGTH_SHORT).show();
                     stop();
                 }
@@ -113,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {// todo 播放出错，如有必要，则进行相关的错误提示
 //                    MediaPlayer.MEDIA_ERROR_IO
-                    Log.e(Ulog.TAG, "出错---what>" + what + "<---extra>" + extra + "<---");
+                    Ulog.e("出错---what>" + what + "<---extra>" + extra + "<---");
                     Toast.makeText(MainActivity.this, "出错", Toast.LENGTH_SHORT).show();
                     stop();
                     return false;
@@ -123,21 +133,21 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(MediaPlayer mp, int percent) {//todo 监听缓冲的状态
-                    Log.e(Ulog.TAG, String.format("缓冲百分比？%d", percent));
+                    Ulog.e(String.format("缓冲百分比？%d", percent));
                 }
             });
 
             mediaPlayer.prepareAsync();
-            Log.e(Ulog.TAG, "异步准备");
+            Ulog.e("异步准备");
             /**
              * todo 下面这三个调用对于网络资源不适用（仅适合本地资源）
              */
 //            videoTimes = mediaPlayer.getDuration();
 //            videoWidth = mediaPlayer.getVideoWidth();
 //            videoHeight = mediaPlayer.getVideoHeight();
-//            Log.e(Ulog.TAG, "播放时间(毫秒):" + videoTimes);
-//            Log.e(Ulog.TAG, "播放视频宽度:" + videoWidth);
-//            Log.e(Ulog.TAG, "播放视频高度:" + videoHeight);
+//            Ulog.e( "播放时间(毫秒):" + videoTimes);
+//            Ulog.e( "播放视频宽度:" + videoWidth);
+//            Ulog.e( "播放视频高度:" + videoHeight);
             /**
              * todo 需要保证声明了INTERNET权限
              *
@@ -180,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
              */
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(Ulog.TAG, "出错：" + e.getMessage());
+            Ulog.e("出错：" + e.getMessage());
         }
     }
 
