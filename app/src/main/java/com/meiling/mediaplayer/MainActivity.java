@@ -3,6 +3,7 @@ package com.meiling.mediaplayer;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -105,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
                     Ulog.e("播放视频宽度:" + videoWidth);
                     Ulog.e("播放视频高度:" + videoHeight);
 
+                    /**
+                     * todo 当需要保证SurfaceView预览与实际视频不会存在拉伸问题时，需要根据获取的视频的宽高来重置
+                     */
+//                    reSizeSurfaceView(videoWidth, videoHeight);
+
                     Toast.makeText(MainActivity.this, "准备完成", Toast.LENGTH_SHORT).show();
                     start.setEnabled(true);
                 }
@@ -192,6 +198,14 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             Ulog.e("出错：" + e.getMessage());
         }
+    }
+
+    private void reSizeSurfaceView(int realWidth, int realHeight) {
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) preview.getLayoutParams();
+        layoutParams.width = screenWidth;
+        layoutParams.height = (int) (1.0f * screenWidth * realHeight / realWidth);//todo 先转换成float，再转换成int，减少int计算是造成的精度损失
+        preview.setLayoutParams(layoutParams);
     }
 
     private void start() {
